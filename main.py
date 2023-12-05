@@ -123,7 +123,7 @@ async def pray(ctx):
         embed = discord.Embed(
             description="**Server not registered**",
             color=discord.Color.red())
-        embed.set_footer(text="pr pray - Contact me to add your server's members!")
+        embed.set_footer(text="pr pray - Contact me to add your server!")
         await ctx.channel.send(embed=embed)
         return
         
@@ -166,7 +166,7 @@ async def gta7(ctx):
     
     timeline = chosen["Random timeline"]() if r.choice([True, False]) else chosen["Timeline"]
 
-    final_string = f"{chosen['Company']} will {chosen['Release']} {prefix}{chosen['Title']} {chosen['Number']}{postfix} {timeline}, {chosen['Affirmation']} {chosen['Bro']}"
+    final_string = f"{chosen['Company']} will {chosen['Release']} \"{prefix}{chosen['Title']} {chosen['Number']}{postfix}\" {timeline}, {chosen['Affirmation']} {chosen['Bro']}"
 
     embed = discord.Embed(
         description="**Accurate GTA VI reveal date predicition:**",

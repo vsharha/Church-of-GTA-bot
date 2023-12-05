@@ -25,7 +25,7 @@ gta_keywords = {
     "Number":(
         "6",
         "VI",
-        "six"
+        "Six"
     ),
     "Timeline":(
         "tomorrow",
