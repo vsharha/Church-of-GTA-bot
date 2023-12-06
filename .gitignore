@@ -1,1 +1,5 @@
 keep_alive.py
+pyproject.toml
+replit.nix
+.replit
+__pycache__/

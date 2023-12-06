@@ -140,12 +140,16 @@ async def pray(ctx):
     embed.set_footer(text="pr pray - Let me know if you have any suggestions!")
     await ctx.channel.send(embed=embed)
 
+async def trust(message):
+    if "trust" in message.content.casefold():
+        file = discord.File("img/trust.gif")
+        await message.channel.send(file=file)
 
-# @bot.event
-# async def on_message(message):
-#     if bot.user.mentioned_in(message):
-#         await pray(await bot.get_context(message))
-#     await bot.process_commands(message)
+@bot.event
+async def on_message(message):
+    await trust(message)
+    
+    await bot.process_commands(message)
 
 
 @bot.command()
@@ -173,7 +177,7 @@ async def gta7(ctx):
         color=discord.Color.purple())
     embed.add_field(
         name=final_string,
-        value=chosen['Denial'].capitalize(),
+        value=chosen['Denial'],
         inline=False
     )
     embed.set_footer(text="pr gta6")
