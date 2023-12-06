@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "repl-nix-church-of-gta-bot"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "repl_nix_church_of_gta_bot"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+discord = "^2.3.2"
+flask = "^3.0.0"
+opencv-python = "^4.8.1.78"
+pytz = "^2023.3.post1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
