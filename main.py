@@ -111,6 +111,17 @@ async def send_random_frame(ctx, arg1, vid_file_name):
             await ctx.channel.send(file = file, embed = embed)
             os.remove(file_name)
 
+@bot.event
+async def on_message(message):
+    if "trust" in message.content.casefold():
+        file = discord.File("img/trust.gif")
+        await message.channel.send(file=file)
+
+    elif bot.user.mentioned_in(message) and "real" in message.content.casefold():
+        await message.channel.send("Real.")
+
+    await bot.process_commands(message)
+
 @bot.command()
 async def trailer(ctx, arg1=1):
     await send_random_frame(ctx, arg1, "img/trailer1.mp4")
@@ -139,18 +150,6 @@ async def pray(ctx):
                         inline=True)
     embed.set_footer(text="pr pray - Let me know if you have any suggestions!")
     await ctx.channel.send(embed=embed)
-
-async def trust(message):
-    if "trust" in message.content.casefold():
-        file = discord.File("img/trust.gif")
-        await message.channel.send(file=file)
-
-@bot.event
-async def on_message(message):
-    await trust(message)
-    
-    await bot.process_commands(message)
-
 
 @bot.command()
 async def gta7(ctx):
