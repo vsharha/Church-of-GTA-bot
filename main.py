@@ -24,11 +24,10 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or("pr ", "PR ", "Pr "
 
 @bot.event
 async def on_ready():
-    # with open("users.csv", "r") as f:
-    #     reader = csv.DictReader(f)
-    #     for row in reader:
-    #         now = dt.now(pytz.timezone(row["Timezone"]))
-    #         print(now.strftime("%Z"), row["Name"])
+    with open("users.csv", "r") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            print(get_date(row["Timezone"]), row["Name"])
         
     print("Initiated.")
 
@@ -66,7 +65,7 @@ def add_embed_links(embed):
 
 def get_date(timezone):
     now = dt.now(pytz.timezone(timezone))
-    date_str = now.strftime("%dth of %B, %I:%M %p"+(" (%H:%M)" if now.strftime('%H') > now.strftime('%I') else ""))
+    date_str = now.strftime("%dth of %B, %I:%M %p"+(" (%H:%M)" if now.strftime('%H') != now.strftime('%I') else ""))
     if date_str[0] == "0":
         date_str = date_str[1:]
     if not 11 <= now.day <= 13:
