@@ -11,6 +11,10 @@ from discord.ext import commands
 from gta_keywords import gta_keywords
 from keep_alive import keep_alive
 
+
+# BOT SETTINGS
+
+
 token = os.environ["TOKEN"]
 
 intents = discord.Intents.default()
@@ -21,6 +25,10 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or("pr ", "PR ", "Pr "
 async def on_ready():
     print("Initiated.")
 
+
+# HELP COMMAND
+
+
 help_command_values = (
     ("pr help", "Show this message"),
     ("pr pray", "See the current time in some server members' timezones"),
@@ -29,19 +37,25 @@ help_command_values = (
     ("pr [sam/lucia/jason] 1-10", "Get random pictures of Sam Houser, Lucia or Jason"),
 )
 
-
 class my_help(commands.HelpCommand):
     async def send_bot_help(self, mapping):
         embed = discord.Embed(description="**List of available commands:**",
                               color=discord.Color.dark_green())
         for i in help_command_values:
             embed.add_field(name=f"• `{i[0]}`", value=i[1], inline=False)
+        add_embed_links(embed)
         embed.set_footer(text="pr help")
         await self.context.send(embed=embed)
 
 
 bot.help_command = my_help()
 
+
+# FUNCTIONS
+
+
+def add_embed_links(embed):
+    embed.add_field(name = "Links", value = "[Add Me](https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=2048&scope=bot)", inline = False)
 
 def get_date(timezone):
     now = dt.now(tz(timezone))
@@ -58,7 +72,7 @@ def get_date(timezone):
 def get_valid_range(num, maxi):
     try:
         num = int(num)
-    except:
+    except ValueError:
         return 1
         
     if num <= 0:
@@ -66,6 +80,11 @@ def get_valid_range(num, maxi):
     if num > maxi:
         return maxi
     return num
+
+def get_users_file_names():
+    with open("users_file_names.csv", "r") as f:
+        csv_reader = csv.DictReader(f)
+        return {int(row['ID']):f"users/{row['File name']}.csv" for row in csv_reader}
 
 async def send_random_photo_from_dir(ctx, dir, arg1):
     arg1 = get_valid_range(arg1, 10)
@@ -80,11 +99,6 @@ async def send_random_photo_from_dir(ctx, dir, arg1):
             text=f"pr {dir} - Let me know if you have any suggestions!")
         
         await ctx.channel.send(file = file, embed = embed)
-
-def get_users_file_names():
-    with open("users_file_names.csv", "r") as f:
-        csv_reader = csv.DictReader(f)
-        return {int(row['ID']):f"users/{row['File name']}.csv" for row in csv_reader}
 
 async def send_random_frame(ctx, arg1, vid_file_name):
     arg1 = get_valid_range(arg1, 5)
@@ -106,10 +120,12 @@ async def send_random_frame(ctx, arg1, vid_file_name):
                                   color=discord.Color.purple())
             embed.set_image(url = "attachment://" + file.filename)
             embed.set_footer(
-                text=f"pr trailer - Let me know if you have any suggestions!")
+                text="pr trailer - Let me know if you have any suggestions!")
 
             await ctx.channel.send(file = file, embed = embed)
             os.remove(file_name)
+
+
 
 @bot.event
 async def on_message(message):
@@ -118,14 +134,21 @@ async def on_message(message):
         await message.channel.send(file=file)
 
     elif bot.user.mentioned_in(message) and "real" in message.content.casefold():
-        await message.channel.send("Real.")
+        match(r.randint(0,2)):
+            case 0:
+                msg = "Real."
+            case 1:
+                msg = "Fake."
+            case 2:
+                msg = f"{r.randint(1,99)}% real."
+        await message.channel.send(msg)
 
     await bot.process_commands(message)
 
-@bot.command()
-async def trailer(ctx, arg1=1):
-    await send_random_frame(ctx, arg1, "img/trailer1.mp4")
-            
+
+# COMMANDS
+
+
 @bot.command()
 async def pray(ctx):
     file_names = get_users_file_names()
@@ -148,6 +171,7 @@ async def pray(ctx):
              embed.add_field(name=get_date(row['Timezone']),
                         value=f"<@{row['ID']}>",
                         inline=True)
+    add_embed_links(embed)
     embed.set_footer(text="pr pray - Let me know if you have any suggestions!")
     await ctx.channel.send(embed=embed)
 
@@ -179,12 +203,18 @@ async def gta7(ctx):
         value=chosen['Denial'],
         inline=False
     )
+    # add_embed_links(embed)
     embed.set_footer(text="pr gta6")
     await ctx.channel.send(embed=embed)
 
+# Commands that are based on functions
 @bot.command()
 async def gta6(ctx):
     await gta7(ctx)
+
+@bot.command()
+async def trailer(ctx, arg1=1):
+    await send_random_frame(ctx, arg1, "img/trailer1.mp4")
 
 @bot.command()
 async def lucia(ctx, arg1=1):
@@ -198,7 +228,10 @@ async def sam(ctx, arg1=1):
 async def jason(ctx, arg1=1):
     await send_random_photo_from_dir(ctx, "jason", arg1)
 
-#KEEPING THE BOT RUNNING
+
+# RUNNING THE BOT
+
+
 keep_alive()
 
 try:
