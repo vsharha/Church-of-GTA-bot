@@ -163,7 +163,6 @@ async def pray(ctx):
         csv_reader = csv.DictReader(f)
         for row in csv_reader:
             member = ctx.guild.get_member(int(row['ID']))
-            print(member)
             if member:
                 server_has_registered_members = True
                 embed.add_field(name=get_date(row['Timezone']), value=member.mention, inline=True)
