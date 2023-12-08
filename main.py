@@ -109,7 +109,6 @@ async def send_random_frame(ctx, arg1, vid_file_name):
     n_frames = vidcap.get(cv2.CAP_PROP_FRAME_COUNT)
     for i in range(arg1):
         random_frame_ind = r.randint(10, n_frames)
-        print(n_frames)
         # set frame position
         vidcap.set(cv2.CAP_PROP_POS_FRAMES, random_frame_ind)
         success, image = vidcap.read()
@@ -182,8 +181,8 @@ async def pray(ctx):
     embed.set_footer(text="pr pray - Let me know if you have any suggestions!")
     await ctx.channel.send(embed=embed)    
 
-@bot.command()
-async def gta7(ctx):
+@bot.command(aliases=['gta7'])
+async def gta6(ctx):
     chosen = {key:r.choice(value) for key, value in gta_keywords.items()}
 
     # if not chosen["Title"].isupper():
@@ -215,10 +214,6 @@ async def gta7(ctx):
     await ctx.channel.send(embed=embed)
 
 # Commands that are based on functions
-@bot.command()
-async def gta6(ctx):
-    await gta7(ctx)
-
 @bot.command()
 async def trailer(ctx, arg1=1):
     await send_random_frame(ctx, arg1, "vid/trailer1.mp4")
