@@ -55,7 +55,7 @@ bot.help_command = my_help()
 
 
 def add_embed_links(embed):
-    embed.add_field(name = "Links", value = "[Add Me](https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=2048&scope=bot)", inline = False)
+    embed.add_field(name = "Links", value = "[Add Me to Your Server](https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=2048&scope=bot)", inline = False)
 
 def get_date(timezone):
     now = dt.now(tz(timezone))
