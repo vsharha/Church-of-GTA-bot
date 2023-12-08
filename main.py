@@ -109,11 +109,12 @@ async def send_random_frame(ctx, arg1, vid_file_name):
     n_frames = vidcap.get(cv2.CAP_PROP_FRAME_COUNT)
     for i in range(arg1):
         random_frame_ind = r.randint(10, n_frames)
+        print(n_frames)
         # set frame position
         vidcap.set(cv2.CAP_PROP_POS_FRAMES, random_frame_ind)
         success, image = vidcap.read()
 
-        file_name = f"temp/{ctx.message.id}.jpg"
+        file_name = f"{ctx.message.id}.jpg"
         if success and not os.path.exists(file_name):
             cv2.imwrite(file_name, image)
             file = discord.File(file_name)
@@ -127,14 +128,12 @@ async def send_random_frame(ctx, arg1, vid_file_name):
             await ctx.channel.send(file = file, embed = embed)
             os.remove(file_name)
 
-
-
 @bot.event
 async def on_message(message):
     msg_content = message.content.casefold()
     
     if "trust" in msg_content:
-        file = discord.File("img/trust.gif")
+        file = discord.File("gif/trust.gif")
         await message.channel.send(file=file)
         return
 
@@ -222,7 +221,7 @@ async def gta6(ctx):
 
 @bot.command()
 async def trailer(ctx, arg1=1):
-    await send_random_frame(ctx, arg1, "img/trailer1.mp4")
+    await send_random_frame(ctx, arg1, "vid/trailer1.mp4")
 
 @bot.command()
 async def lucia(ctx, arg1=1):
