@@ -131,11 +131,14 @@ async def send_random_frame(ctx, arg1, vid_file_name):
 
 @bot.event
 async def on_message(message):
-    if "trust" in message.content.casefold():
+    msg_content = message.content.casefold()
+    
+    if "trust" in msg_content:
         file = discord.File("img/trust.gif")
         await message.channel.send(file=file)
+        return
 
-    elif bot.user.mentioned_in(message) and "real" in message.content.casefold():
+    elif bot.user.mentioned_in(message) and "real" in msg_content:
         match(r.randint(0,2)):
             case 0:
                 msg = "Real."
@@ -144,6 +147,7 @@ async def on_message(message):
             case 2:
                 msg = f"{r.randint(1,99)}% real."
         await message.channel.send(msg)
+        return
 
     await bot.process_commands(message)
 
