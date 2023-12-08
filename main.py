@@ -3,7 +3,7 @@ import os
 import random as r
 from datetime import datetime as dt
 import cv2
-from pytz import timezone as tz
+import pytz
 
 import discord
 from discord.ext import commands
@@ -19,10 +19,17 @@ token = os.environ["TOKEN"]
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("pr ", "PR ", "Pr ", "pR "), case_insensitive=True, intents=intents)
 
 @bot.event
 async def on_ready():
+    # with open("users.csv", "r") as f:
+    #     reader = csv.DictReader(f)
+    #     for row in reader:
+    #         now = dt.now(pytz.timezone(row["Timezone"]))
+    #         print(now.strftime("%Z"), row["Name"])
+        
     print("Initiated.")
 
 
@@ -58,7 +65,7 @@ def add_embed_links(embed):
     embed.add_field(name = "Links", value = "[Add Me to Your Server](https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=2048&scope=bot)", inline = False)
 
 def get_date(timezone):
-    now = dt.now(tz(timezone))
+    now = dt.now(pytz.timezone(timezone))
     date_str = now.strftime("%dth of %B, %I:%M %p"+(" (%H:%M)" if now.strftime('%H') > now.strftime('%I') else ""))
     if date_str[0] == "0":
         date_str = date_str[1:]
@@ -80,11 +87,6 @@ def get_valid_range(num, maxi):
     if num > maxi:
         return maxi
     return num
-
-def get_users_file_names():
-    with open("users_file_names.csv", "r") as f:
-        csv_reader = csv.DictReader(f)
-        return {int(row['ID']):f"users/{row['File name']}.csv" for row in csv_reader}
 
 async def send_random_photo_from_dir(ctx, dir, arg1):
     arg1 = get_valid_range(arg1, 10)
@@ -150,10 +152,23 @@ async def on_message(message):
 
 
 @bot.command()
-async def pray(ctx):
-    file_names = get_users_file_names()
+async def pray(ctx):    
+    embed = discord.Embed(
+        description="**Current time for some server members:**",
+        color=discord.Color.teal())
 
-    if ctx.guild.id not in file_names.keys():
+    server_has_registered_members = False
+    
+    with open("users.csv", "r") as f:
+        csv_reader = csv.DictReader(f)
+        for row in csv_reader:
+            member = ctx.guild.get_member(int(row['ID']))
+            print(member)
+            if member:
+                server_has_registered_members = True
+                embed.add_field(name=get_date(row['Timezone']), value=member.mention, inline=True)
+                
+    if not server_has_registered_members:
         embed = discord.Embed(
             description="**Server not registered**",
             color=discord.Color.red())
@@ -161,19 +176,9 @@ async def pray(ctx):
         await ctx.channel.send(embed=embed)
         return
         
-    embed = discord.Embed(
-        description="**Current time for some server members:**",
-        color=discord.Color.teal())
-
-    with open(file_names[ctx.guild.id], "r") as f:
-        csv_reader = csv.DictReader(f)
-        for row in csv_reader:
-             embed.add_field(name=get_date(row['Timezone']),
-                        value=f"<@{row['ID']}>",
-                        inline=True)
     add_embed_links(embed)
     embed.set_footer(text="pr pray - Let me know if you have any suggestions!")
-    await ctx.channel.send(embed=embed)
+    await ctx.channel.send(embed=embed)    
 
 @bot.command()
 async def gta7(ctx):
