@@ -2,7 +2,7 @@ import csv
 import os
 import random as r
 from datetime import datetime as dt
-import cv2
+# import cv2
 import pytz
 
 import discord
@@ -60,7 +60,7 @@ bot.help_command = my_help()
 
 
 def add_embed_links(embed):
-    embed.add_field(name = "Links", value = "[Add Me to Your Server](https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=2048&scope=bot)", inline = False)
+    embed.add_field(name = "Links", value = "[Add Me to Your Server](https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=0&scope=bot)", inline = False)
 
 def get_date(timezone):
     now = dt.now(pytz.timezone(timezone))
@@ -86,8 +86,8 @@ def get_valid_range(num, maxi):
         return maxi
     return num
 
-async def send_random_photo_from_dir(ctx, dir, arg1):
-    arg1 = get_valid_range(arg1, 10)
+async def send_random_photo_from_dir(ctx, dir, arg1, maxi=10):
+    arg1 = get_valid_range(arg1, maxi)
         
     for i in range(arg1):
         file = discord.File(f"img/{dir}/{r.choice(os.listdir('img/'+dir))}")
@@ -99,31 +99,31 @@ async def send_random_photo_from_dir(ctx, dir, arg1):
             text=f"pr {dir} - Let me know if you have any suggestions!")
         
         await ctx.channel.send(file = file, embed = embed)
+    
+# async def send_random_frame(ctx, arg1, vid_file_name):
+#     arg1 = get_valid_range(arg1, 5)
 
-async def send_random_frame(ctx, arg1, vid_file_name):
-    arg1 = get_valid_range(arg1, 5)
+#     vidcap = cv2.VideoCapture(vid_file_name)
+#     n_frames = vidcap.get(cv2.CAP_PROP_FRAME_COUNT)
+#     for i in range(arg1):
+#         random_frame_ind = r.randint(10, n_frames)
+#         # set frame position
+#         vidcap.set(cv2.CAP_PROP_POS_FRAMES, random_frame_ind)
+#         success, image = vidcap.read()
 
-    vidcap = cv2.VideoCapture(vid_file_name)
-    n_frames = vidcap.get(cv2.CAP_PROP_FRAME_COUNT)
-    for i in range(arg1):
-        random_frame_ind = r.randint(10, n_frames)
-        # set frame position
-        vidcap.set(cv2.CAP_PROP_POS_FRAMES, random_frame_ind)
-        success, image = vidcap.read()
+#         file_name = f"{ctx.message.id}.jpg"
+#         if success and not os.path.exists(file_name):
+#             cv2.imwrite(file_name, image)
+#             file = discord.File(file_name)
 
-        file_name = f"{ctx.message.id}.jpg"
-        if success and not os.path.exists(file_name):
-            cv2.imwrite(file_name, image)
-            file = discord.File(file_name)
+#             embed = discord.Embed(description=f"**Random frame{f' #{i+1}' if arg1 > 1 else ''}:**",
+#                                   color=discord.Color.purple())
+#             embed.set_image(url = "attachment://" + file.filename)
+#             embed.set_footer(
+#                 text="pr trailer - Let me know if you have any suggestions!")
 
-            embed = discord.Embed(description=f"**Random frame{f' #{i+1}' if arg1 > 1 else ''}:**",
-                                  color=discord.Color.purple())
-            embed.set_image(url = "attachment://" + file.filename)
-            embed.set_footer(
-                text="pr trailer - Let me know if you have any suggestions!")
-
-            await ctx.channel.send(file = file, embed = embed)
-            os.remove(file_name)
+#             await ctx.channel.send(file = file, embed = embed)
+#             os.remove(file_name)
 
 @bot.event
 async def on_message(message):
@@ -152,27 +152,28 @@ async def on_message(message):
 
 
 @bot.command()
-async def pray(ctx):    
-    embed = discord.Embed(
-        description="**Current time for some server members:**",
-        color=discord.Color.teal())
-
-    server_has_registered_members = False
+async def pray(ctx):
+    is_server_registered = False
     
-    with open("users.csv", "r") as f:
-        csv_reader = csv.DictReader(f)
-        for row in csv_reader:
-            member = ctx.guild.get_member(int(row['ID']))
-            if member:
-                server_has_registered_members = True
-                try:
-                    date = get_date(row['Timezone'])
-                except commands.errors.CommandInvokeError.UnknownTimeZoneError:
-                    date = "Error"
-                embed.add_field(name=date, value=member.mention, inline=True)
-                    
+    if ctx.guild:
+        embed = discord.Embed(
+            description="**Current time for some server members:**",
+            color=discord.Color.teal())
+        
+        with open("users.csv", "r") as f:
+            csv_reader = csv.DictReader(f)
+            for row in csv_reader:
+                member = ctx.guild.get_member(int(row['ID']))
+                if member:
+                    is_server_registered = True
+                    try:
+                        date = get_date(row['Timezone'])
+                    except commands.errors.CommandInvokeError.UnknownTimeZoneError:
+                        date = "Error"
+                    embed.add_field(name=date, value=member.mention, inline=True)
+                        
                 
-    if not server_has_registered_members:
+    if not is_server_registered:
         embed = discord.Embed(
             description="**Server not registered**",
             color=discord.Color.red())
@@ -218,8 +219,15 @@ async def gta6(ctx):
 
 # Commands that are based on functions
 @bot.command()
-async def trailer(ctx, arg1=1):
-    await send_random_frame(ctx, arg1, "vid/trailer1.mp4")
+async def gta(ctx, arg1):
+    arg1 = int(arg1)
+    if arg1 in (6, 7):
+        await gta6(ctx)
+
+# @bot.command()
+# async def trailer(ctx, arg1=1):
+#     # await send_random_frame(ctx, arg1, "vid/trailer1.mp4")
+#     await send_random_photo_from_dir(ctx, "trailer", arg1, 5)
 
 @bot.command()
 async def lucia(ctx, arg1=1):
