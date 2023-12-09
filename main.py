@@ -9,7 +9,6 @@ import discord
 from discord.ext import commands
 
 from gta_keywords import gta_keywords
-from keep_alive import keep_alive
 
 
 # BOT SETTINGS
@@ -24,10 +23,10 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or("pr ", "PR ", "Pr "
 
 @bot.event
 async def on_ready():
-    with open("users.csv", "r") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            print(get_date(row["Timezone"]), row["Name"])
+    # with open("users.csv", "r") as f:
+    #     reader = csv.DictReader(f)
+    #     for row in reader:
+    #         print(get_date(row["Timezone"]), row["Name"])
         
     print("Initiated.")
 
@@ -232,8 +231,6 @@ async def jason(ctx, arg1=1):
 
 # RUNNING THE BOT
 
-
-keep_alive()
 
 try:
     bot.run(token)
