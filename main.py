@@ -165,7 +165,12 @@ async def pray(ctx):
             member = ctx.guild.get_member(int(row['ID']))
             if member:
                 server_has_registered_members = True
-                embed.add_field(name=get_date(row['Timezone']), value=member.mention, inline=True)
+                try:
+                    date = get_date(row['Timezone'])
+                except commands.errors.CommandInvokeError.UnknownTimeZoneError:
+                    date = "Error"
+                embed.add_field(name=date, value=member.mention, inline=True)
+                    
                 
     if not server_has_registered_members:
         embed = discord.Embed(
