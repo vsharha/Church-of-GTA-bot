@@ -2,6 +2,7 @@ import csv
 import os
 import random as r
 from datetime import datetime as dt
+
 import pytz
 
 import discord
@@ -143,7 +144,7 @@ async def on_message(message):
 
 @bot.command()
 async def pray(ctx):
-    is_server_registered = False
+    valid_users = 0
     
     if ctx.guild:
         embed = discord.Embed(
@@ -155,14 +156,16 @@ async def pray(ctx):
             for row in csv_reader:
                 member = ctx.guild.get_member(int(row['ID']))
                 if member:
-                    is_server_registered = True
+                    valid_users += 1
                     try:
                         date = get_date(row['Timezone'])
                     except commands.errors.CommandInvokeError.UnknownTimeZoneError:
                         date = "Error"
                     embed.add_field(name=date, value=member.mention, inline=True)
+        for i in range(valid_users % 3):
+            embed.add_field(name="", value="", inline=True)
                 
-    if not is_server_registered:
+    if not valid_users:
         embed = discord.Embed(
             description="**Server not registered**",
             color=discord.Color.red())
