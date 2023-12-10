@@ -37,7 +37,7 @@ async def on_ready():
 
 help_command_values = (
     ("pr help", "Show this message"),
-    ("pr pray", "See the current time in some server members' timezones"),
+    ("pr pray", "See the current time for some server members"),
     ("pr gta6", "Get an accurate Trailer 2 release date prediction"),
     ("pr trailer 1-10", "Get random frames from Trailer 1"),
     ("pr [sam/lucia/jason] 1-10", "Get random pictures of Sam Houser, Lucia or Jason"),
@@ -113,7 +113,7 @@ async def send_random_photo_from_dir(ctx, dir, arg1, maxi=10):
         embed.set_footer(
             text=f"pr {dir} - Let me know if you have any suggestions!")
         
-        await ctx.channel.send(file = file, embed = embed)
+        await ctx.channel.send(file=file, embed=embed)
 
 
 @bot.event
