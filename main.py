@@ -55,7 +55,7 @@ class my_help(commands.HelpCommand):
             embed.add_field(name=f"• `{i[0]}`", value=i[1], inline=False)
         embed.add_field(name="**Other features**", value="", inline=False)
         for i in other_features_values:
-            embed.add_field(name=f"• {i[0]}", value=i[1], inline=False)
+            embed.add_field(name=f"• *{i[0]}*", value=i[1], inline=False)
         add_embed_links(embed)
         embed.set_footer(text="pr help")
         await self.context.send(embed=embed)
