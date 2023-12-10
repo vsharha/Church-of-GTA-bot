@@ -134,7 +134,7 @@ async def on_message(message):
         await message.channel.send(file=file)
         return
 
-    elif bot.user.mentioned_in(message) and "real" in msg_content:
+    elif bot.user.mentioned_in(message) and ("real" in msg_content or "fake" in msg_content):
         match(r.randint(0,2)):
             case 0:
                 msg = "Real."
