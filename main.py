@@ -53,9 +53,12 @@ class my_help(commands.HelpCommand):
                               color=discord.Color.dark_green())
         for i in help_command_values:
             embed.add_field(name=f"• `{i[0]}`", value=i[1], inline=False)
-        embed.add_field(name="**Other features:**", value="", inline=False)
+        await self.context.send(embed=embed)
+
+        embed = discord.Embed(description="**Other features:**",
+                              color=discord.Color.dark_green())
         for i in other_features_values:
-            embed.add_field(name=f"• `{i[0]}`", value=i[1], inline=False)
+            embed.add_field(name=f"• {i[0]}", value=i[1], inline=False)
         add_embed_links(embed)
         embed.set_footer(text="pr help")
         await self.context.send(embed=embed)
