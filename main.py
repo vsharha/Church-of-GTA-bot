@@ -43,8 +43,8 @@ help_command_values = (
 )
 
 other_features_values = (
-    ("Any message containing `trailer`", "Responds with a gif from Trailer 1"),
-    ("Any message containing a mention to the bot and `real` or `fake`", "Responds randomly with `Real`, `Fake` or `x% real`")
+    ("Any message containing 'trailer'", "Responds with a gif from Trailer 1"),
+    ("Any message containing a mention to the bot and 'real' or 'fake'", "Responds randomly with `Real`, `Fake` or `x% real`")
 )
 
 class my_help(commands.HelpCommand):
@@ -55,7 +55,7 @@ class my_help(commands.HelpCommand):
             embed.add_field(name=f"• `{i[0]}`", value=i[1], inline=False)
         embed.add_field(name="**Other features**", value="", inline=False)
         for i in other_features_values:
-            embed.add_field(name=f"• *{i[0]}*", value=i[1], inline=False)
+            embed.add_field(name=f"• `{i[0]}`", value=i[1], inline=False)
         add_embed_links(embed)
         embed.set_footer(text="pr help")
         await self.context.send(embed=embed)
