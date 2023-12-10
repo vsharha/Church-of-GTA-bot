@@ -162,8 +162,6 @@ async def pray(ctx):
                     except commands.errors.CommandInvokeError.UnknownTimeZoneError:
                         date = "Error"
                     embed.add_field(name=date, value=member.mention, inline=True)
-        for i in range(valid_users % 3):
-            embed.add_field(name="", value="", inline=True)
                 
     if not valid_users:
         embed = discord.Embed(
