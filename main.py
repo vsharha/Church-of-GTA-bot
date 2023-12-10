@@ -218,7 +218,7 @@ async def gta(ctx, arg1):
 
 @bot.command()
 async def trailer(ctx, arg1=1):
-    # await send_random_frame(ctx, arg1, "vid/trailer1.mp4")
+    # await send_random_frame(ctx, arg1, "vid/1080.mp4")
     await send_random_photo_from_dir(ctx, "trailer", arg1)
 
 
