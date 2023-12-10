@@ -42,13 +42,20 @@ help_command_values = (
     ("pr [sam/lucia/jason] 1-10", "Get random pictures of Sam Houser, Lucia or Jason"),
 )
 
+other_features_values = (
+    ("Any message containing `trailer`", "Responds with a gif from Trailer 1"),
+    ("Any message containing a mention to the bot and `real` or `fake`", "Responds randomly with `Real`, `Fake` or `x% real`")
+)
 
 class my_help(commands.HelpCommand):
     async def send_bot_help(self, mapping):
         embed = discord.Embed(description="**List of available commands:**",
                               color=discord.Color.dark_green())
         for i in help_command_values:
-            embed.add_field(name=f"• `{i[0]}`", value=i[1], inline=False)
+            embed.add_field(name=f"• `{i[0]}`", value=i[1], inline=True)
+        embed.add_field(name="**Other features**")
+        for i in other_features_values:
+            embed.add_field(name=f"• `{i[0]}`", value=i[1], inline=True)
         add_embed_links(embed)
         embed.set_footer(text="pr help")
         await self.context.send(embed=embed)
@@ -61,7 +68,7 @@ bot.help_command = my_help()
 
 
 def add_embed_links(embed):
-    embed.add_field(name = "Links", value = "[Add Me to Your Server](https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=0&scope=bot)", inline = False)
+    embed.add_field(name = "Links", value = "[Add Me to Your Server](https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=0&scope=bot) • [Join the Church of GTA](https://discord.gg/KUhB84NzHA)", inline = False)
 
 
 def get_date(timezone):
