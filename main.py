@@ -43,8 +43,8 @@ help_command_values = (
 )
 
 other_features_values = (
-    ("Any message containing 'trailer'", "Responds with a gif from Trailer 1"),
-    ("Any message containing a mention to the bot and 'real' or 'fake'", "Responds randomly with `Real`, `Fake` or `x% real`")
+    ("Any message containing `trust`", "Responds with a gif from Trailer 1"),
+    ("Any message containing a mention to the bot and `real` or `fake`", "Responds randomly with `Real`, `Fake` or `x% real`")
 )
 
 class my_help(commands.HelpCommand):
@@ -55,7 +55,7 @@ class my_help(commands.HelpCommand):
             embed.add_field(name=f"• `{i[0]}`", value=i[1], inline=False)
         await self.context.send(embed=embed)
 
-        embed = discord.Embed(description="**Other features:**",
+        embed = discord.Embed(description="**Other features of the bot:**",
                               color=discord.Color.dark_green())
         for i in other_features_values:
             embed.add_field(name=f"• {i[0]}", value=i[1], inline=False)
@@ -127,9 +127,9 @@ async def on_message(message):
     elif bot.user.mentioned_in(message) and ("real" in msg_content or "fake" in msg_content):
         match(r.randint(0,2)):
             case 0:
-                msg = r.choice("Real.", "Yeah.")
+                msg = r.choice(["Real.", "Yeah."])
             case 1:
-                msg = r.choice("Fake.", "Nah.")
+                msg = r.choice(["Fake.", "Nah."])
             case 2:
                 msg = f"{r.randint(1,99)}% real."
         await message.channel.send(msg)
