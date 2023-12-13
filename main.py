@@ -218,6 +218,10 @@ async def gta6(ctx):
 @bot.command()
 async def suggest(ctx, *args):
     if not args:
+        embed = discord.Embed(description="**Error**", color=discord.Color.red())
+        embed.add_field(name="No suggestion provided", value="Use this command again and provide a suggestion")
+        embed.set_footer(text="pr suggest")
+        await ctx.channel.send(embed=embed)
         return
         
     suggestion = " ".join(args)
@@ -234,7 +238,7 @@ async def suggest(ctx, *args):
         
         writer.writerow(dict(zip(fieldnames, [get_date_international(), ctx.message.author.id, ctx.message.author, suggestion])))
 
-    embed = discord.Embed(description="Thanks", color=discord.Color.green())
+    embed = discord.Embed(description="**You are the best**", color=discord.Color.green())
     embed.add_field(name="Thank you for your suggestion", value="If you have any more, don't hesitate to use this command")
     embed.set_footer(text="pr suggest")
     await ctx.channel.send(embed=embed)
