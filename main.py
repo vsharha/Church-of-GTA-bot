@@ -39,9 +39,9 @@ help_command_values = (
     ("pr help", "Show this message"),
     ("pr pray", "See the current time for some server members"),
     ("pr gta6", "Get an accurate Trailer 2 release date prediction"),
-    ("pr trailer 1-10", "Get random frames from Trailer 1"),
-    ("pr [sam/lucia/jason] 1-10", "Get random pictures of Sam Houser, Lucia or Jason"),
-    ("pr suggest", "Suggest a feature for the bot")
+    ("pr trailer (1-10)", "Get random frames from Trailer 1"),
+    ("pr [sam/lucia/jason] (1-10)", "Get random pictures of Sam Houser, Lucia or Jason"),
+    ("pr suggest (suggestion)", "Suggest a feature for the bot")
 )
 
 other_features_values = (
@@ -217,6 +217,9 @@ async def gta6(ctx):
 
 @bot.command()
 async def suggest(ctx, *args):
+    if not args:
+        return
+        
     suggestion = " ".join(args)
 
     fieldnames = ("Date","ID","Name","Suggestion")
@@ -229,7 +232,7 @@ async def suggest(ctx, *args):
         if not os.path.getsize(file_path):
             writer.writeheader()            
         
-        writer.writerow(dict(zip(fieldnames, [get_date_international(), ctx.user.id, ctx.user, suggestion])))
+        writer.writerow(dict(zip(fieldnames, [get_date_international(), ctx.message.author.id, ctx.message.author, suggestion])))
 
     embed = discord.Embed(description="Thank you for your suggestion", color=discord.color.green())
     embed.set_footer(text="pr suggest")
