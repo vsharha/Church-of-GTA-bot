@@ -71,9 +71,18 @@ bot.help_command = my_help()
 
 # FUNCTIONS
 
+links = (
+    ("Add Me to Your Server", "https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=0&scope=bot"),
+    ("Join the Church of GTA", "https://discord.gg/KUhB84NzHA")
+)
 
 def add_embed_links(embed):
-    embed.add_field(name = "Links", value = "[Add Me to Your Server](https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=0&scope=bot) • [Join the Church of GTA](https://discord.gg/KUhB84NzHA)", inline = False)
+    value = ""
+    for ind, link in enumerate(links):
+        if ind != 0:
+            value += " • "
+        value += f"[{link[0]}]({link[1]})"
+    embed.add_field(name = "Links", value = value, inline = False)
 
 
 def get_date(timezone):
@@ -224,7 +233,7 @@ async def suggest(ctx, *args):
         await ctx.channel.send(embed=embed)
         return
         
-    suggestion = " ".join(args)
+    suggestion = " ".join(args).replace(",", "")
 
     fieldnames = ("Date","ID","Name","Suggestion")
 
