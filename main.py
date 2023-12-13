@@ -41,6 +41,7 @@ help_command_values = (
     ("pr gta6", "Get an accurate Trailer 2 release date prediction"),
     ("pr trailer 1-10", "Get random frames from Trailer 1"),
     ("pr [sam/lucia/jason] 1-10", "Get random pictures of Sam Houser, Lucia or Jason"),
+    ("pr suggest", "Suggest a feature for the bot")
 )
 
 other_features_values = (
@@ -86,6 +87,11 @@ def get_date(timezone):
             date_str = date_str.replace(
                 "th", "st" if check == 1 else "nd" if check == 2 else "rd")
     return date_str
+
+
+def get_date_international():
+    now = dt.now(pytz.timezone("Etc/GMT"))
+    return now.strftime("%y-%m-%d %H:%M:%S")
 
 
 def get_valid_range(num, maxi):
@@ -206,6 +212,27 @@ async def gta6(ctx):
     )
     # add_embed_links(embed)
     embed.set_footer(text="pr gta6")
+    await ctx.channel.send(embed=embed)
+
+
+@bot.command()
+async def suggest(ctx, *args):
+    suggestion = " ".join(args)
+
+    fieldnames = ("Date","ID","Name","Suggestion")
+
+    file_path = "suggestions.csv"
+    
+    with open(file_path, "a+") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+
+        if not os.path.getsize(file_path):
+            writer.writeheader()            
+        
+        writer.writerow(dict(zip(fieldnames, [get_date_international(), ctx.user.id, ctx.user, suggestion])))
+
+    embed = discord.Embed(description="Thank you for your suggestion", color=discord.color.green())
+    embed.set_footer(text="pr suggest")
     await ctx.channel.send(embed=embed)
 
 
