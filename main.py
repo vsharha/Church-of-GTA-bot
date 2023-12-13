@@ -39,9 +39,9 @@ help_command_values = (
     ("pr help", "Show this message"),
     ("pr pray", "See the current time for some server members"),
     ("pr gta6", "Get an accurate Trailer 2 release date prediction"),
-    ("pr trailer (1-10)", "Get random frames from Trailer 1"),
-    ("pr [sam/lucia/jason] (1-10)", "Get random pictures of Sam Houser, Lucia or Jason"),
-    ("pr suggest (suggestion)", "Suggest a feature for the bot")
+    ("pr trailer [1-10]", "Get random frames from Trailer 1"),
+    ("pr (sam/lucia/jason) [1-10]", "Get random pictures of Sam Houser, Lucia or Jason"),
+    ("pr suggest [suggestion]", "Suggest a feature for the bot")
 )
 
 other_features_values = (
@@ -117,7 +117,7 @@ async def send_random_photo_from_dir(ctx, dir, arg1, maxi=10):
                               color=discord.Color.teal())
         embed.set_image(url = "attachment://" + file.filename)
         embed.set_footer(
-            text=f"pr {dir} - Let me know if you have any suggestions!")
+            text=f"pr {dir} - Send in any suggestions using \"pr suggest\"")
         
         await ctx.channel.send(file=file, embed=embed)
 
@@ -178,7 +178,7 @@ async def pray(ctx):
         return
         
     add_embed_links(embed)
-    embed.set_footer(text="pr pray - Let me know if you have any suggestions!")
+    embed.set_footer(text="pr pray - Contact me to be added!")
     await ctx.channel.send(embed=embed)    
 
 
