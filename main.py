@@ -239,7 +239,7 @@ async def suggest(ctx, *args):
     suggestion = " ".join(args).replace(",", "")
 
     dev = bot.get_user(dev_ID)
-    dev.send(f"**New suggestion**\n*Sent in by {ctx.message.author} - {ctx.message.author.id}*\n{suggestion}")
+    await dev.send(f"**New suggestion**\n*Sent in by {ctx.message.author} - {ctx.message.author.id}*\n{suggestion}")
     
     fieldnames = ("Date","ID","Name","Suggestion")
 
