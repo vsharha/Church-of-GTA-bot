@@ -71,10 +71,12 @@ bot.help_command = my_help()
 
 # FUNCTIONS
 
+
 links = (
     ("Add Me to Your Server", "https://discord.com/api/oauth2/authorize?client_id=997899986668888155&permissions=0&scope=bot"),
     ("Join the Church of GTA", "https://discord.gg/KUhB84NzHA")
 )
+
 
 def add_embed_links(embed):
     value = ""
@@ -224,6 +226,7 @@ async def gta6(ctx):
     await ctx.channel.send(embed=embed)
 
 
+dev_ID = 530447806985404426
 @bot.command()
 async def suggest(ctx, *args):
     if not args:
@@ -235,6 +238,9 @@ async def suggest(ctx, *args):
         
     suggestion = " ".join(args).replace(",", "")
 
+    dev = bot.get_user(dev_ID)
+    dev.send(f"**New suggestion**\n*Sent in by {ctx.message.author} - {ctx.message.author.id}*\n{suggestion}")
+    
     fieldnames = ("Date","ID","Name","Suggestion")
 
     file_path = "suggestions.csv"
