@@ -234,7 +234,8 @@ async def suggest(ctx, *args):
         
         writer.writerow(dict(zip(fieldnames, [get_date_international(), ctx.message.author.id, ctx.message.author, suggestion])))
 
-    embed = discord.Embed(description="Thank you for your suggestion", color=discord.Color.green())
+    embed = discord.Embed(description="Thanks", color=discord.Color.green())
+    embed.add_field(name="Thank you for your suggestion", value="If you have any more, don't hesitate to use this command")
     embed.set_footer(text="pr suggest")
     await ctx.channel.send(embed=embed)
 
