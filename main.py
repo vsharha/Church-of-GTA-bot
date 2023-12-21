@@ -41,6 +41,7 @@ help_command_values = (
     ("pr gta6", "Get an accurate Trailer 2 release date prediction"),
     ("pr trailer [1-10]", "Get random frames from Trailer 1"),
     ("pr (sam/lucia/jason) [1-10]", "Get random pictures of Sam Houser, Lucia or Jason"),
+    ("pr spam [1-20]", "Spam pictures of Sam Houser"),
     ("pr suggest [suggestion]", "Suggest a feature for the bot")
 )
 
@@ -105,14 +106,14 @@ def get_date_international():
     return now.strftime("%y-%m-%d %H:%M:%S")
 
 
-def get_valid_range(num, maxi):
+def get_valid_range(num, maxi=10, default=1):
     try:
         num = int(num)
     except ValueError:
-        return 1
+        return default
         
     if num <= 0:
-        return 1
+        return default
     if num > maxi:
         return maxi
     return num
@@ -288,10 +289,20 @@ async def jason(ctx, arg1=1):
     await send_random_photo_from_dir(ctx, "jason", arg1)
 
 
+@bot.command()
+async def spam(ctx, arg1):
+    arg1 = get_valid_range(arg1, 20, 5)
+
+    for i in range(arg1):
+        file = discord.File("img/sam_spam.jpg")
+        await ctx.channel.send(file=file)
+
+
 # RUNNING THE BOT
 
-
 bot.run(token)
+
+
 
 
 # Requires cv2
