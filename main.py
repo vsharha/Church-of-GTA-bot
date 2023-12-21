@@ -290,7 +290,7 @@ async def jason(ctx, arg1=1):
 
 
 @bot.command()
-async def spam(ctx, arg1):
+async def spam(ctx, arg1=5):
     arg1 = get_valid_range(arg1, 20, 5)
 
     for i in range(arg1):
